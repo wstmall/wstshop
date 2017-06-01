@@ -1,0 +1,125 @@
+@CHARSET "UTF-8";
+body{
+	padding:0px;
+	overflow-x:hidden;
+	background:#069add;
+	display: block;
+}
+*{
+	padding:0;
+	margin:0;
+}
+.wst-lo-center{
+    margin: 0 auto;
+    background:url(../img/bg.png) -50px 0px no-repeat;
+    background-size: 100%;
+}
+.wst-lo{
+	position: absolute;
+	width: 570px;
+	height:330px;
+    top: 15%;
+    left: 28%;
+	padding-top:32px;
+	padding-left:0px;
+	background:url(../img/img_shurukuang.png) 0px 0px no-repeat;
+	background-size: 100%;
+}
+.wst-lo .head{
+	position: absolute;
+	top: -16px;
+    left: 27%;
+    width: 252px;
+    height: 62px;
+    line-height: 55px;
+    font-size: 20px;
+    color: #ffffff;
+    font-family: "microsoft yahei";
+    text-shadow:#717070 1px 1px 1px;
+    text-align: center;
+	background:url(../img/img_titlebg.png) 0px 0px no-repeat;
+	background-size: 100%;
+}
+.wst-lo-left{
+    float: left;
+	width: 235px;
+	height:256px;
+	background-size: cover;
+}
+.wst-lo-left img{
+	margin-left: 45px;
+}
+.wst-lo-form{
+	padding-top:28px;
+	padding-left:0px;
+}
+.wst-lo-form .name{
+	font-size: 13px;
+	text-align: right;
+	color: #0699de;
+}
+.wst-lo-form .frame{
+	float: left;
+	height:32px;
+	margin:5px 0px;
+	border-radius:3px;
+	background:#ffffff;
+	border:1px solid #d2d2d2;
+}
+.wst-lo-form .frame .text{
+	outline: none;
+	margin-top: 2px;
+	padding:0px 5px;
+	float: left;
+	height:25px;
+	width:220px;
+	background:#ffffff;
+	border:1px solid #ffffff;
+}
+.wst-lo-form .frame .text2{
+	outline: none;
+	margin-top: 2px;
+	padding-left:5px;
+	float: left;
+	height:25px;
+	width:117px;
+	background:#ffffff;
+	border:1px solid #ffffff;
+}
+.wst-lo-form .but{
+	float: left;
+	height:32px;
+	margin:0px 0px 0px 50px;
+}
+.wst-lo-form .but input{
+	float: left;
+	height:30px;
+	width:120px;
+	border:none;
+	outline: none;
+	color: #ffffff;
+	font-family:"microsoft yahei";
+	border-radius:2px;
+	cursor:pointer;
+	background:#2abaff;
+}
+.wst-lo-form .but input:hover{
+	background:#35ace5;
+}
+#verifyImg{
+	cursor:pointer;width:108px;border-top-right-radius:6px;border-bottom-right-radius:6px;height:32px;
+}
+/*自定义提示图标*/
+.layui-layer-icowst1,.layui-layer-icowst2,.layui-layer-icowst3{
+  background-image:url(../../../../static/images/wst_icon.png) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover!important;
+}
+.layui-layer-icowst2{background-position: -40px 0!important;}
+.layui-layer-icowst3 {background-position: -80px -1px!important;}
+.layui-layer-icowstloading{
+  background-image:url(../../../../static/images/loading.gif) !important;
+  background-repeat: no-repeat !important;
+  background-size: 206% auto !important;
+  background-position: -16px -16px !important;
+}

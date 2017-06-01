@@ -1,0 +1,32 @@
+{extend name="base" /}
+{block name="js"}
+<script src="__ADMIN__/goods/goods.js?v={$v}" type="text/javascript"></script>
+{/block}
+{block name="main"}
+<div class="l-loading" style="display: block" id="wst-loading"></div>
+<div class="wst-toolbar">
+所属分类：
+<select id="cat_0" class='ipt pgoodsCats' level="0" onchange="WST.ITGoodsCats({id:'cat_0',val:this.value,isRequire:false,className:'pgoodsCats'});">
+   <option value="">-请选择-</option>
+   {volist name=":WSTGoodsCats(0)" id="vo"}
+	<option value="{$vo['catId']}">{$vo['catName']}</option>
+	{/volist}
+</select>
+商品：<input type="text" name="goodsName"  placeholder='商品名称/商品编号' id="goodsName" class='j-ipt'/>
+<button class="btn btn-blue" onclick='javascript:loadSaleGrid(0)'>查询</button>
+<div style='clear:both'></div>
+</div>
+<div class="wst-toolbar">
+<button class="btn " onclick="javascript:changeSale(0,'sale')">下架</button>
+<button class="btn btn-blue" onclick="javascript:changeGoodsStatus('isRecom','sale')">推荐</button>
+<button class="btn btn-blue" onclick="javascript:changeGoodsStatus('isNew','sale')">新品</button>
+<button class="btn btn-blue" onclick="javascript:changeGoodsStatus('isBest','sale')">精品</button>
+<button class="btn btn-blue" onclick="javascript:changeGoodsStatus('isHot','sale')">热销</button>
+<button class="btn btn-blue" onclick="javascript:benchDel('sale')">删除</button>
+<button class="btn btn-green" onclick="javascript:add('index')">新增</button>
+</div>
+<div id="maingrid"></div>
+<script>
+$(function(){initSaleGrid();})
+</script>
+{/block}

@@ -1,0 +1,63 @@
+{extend name="default/base" /}
+{block name="title"}系统提示  - {:WSTConf('CONF.shopName')}{__block__}{/block}
+{block name="css"}{/block}
+{block name="main"}
+<div style="width:100%;height:600px;background:#e1f1f5;">
+	<div class="wst-empty empty1" style="width:1024px;">
+		<div class="button">
+			<a href="javascript:history.go(-1)" class="wst-empty-btn wst-empty-btn1">返回上一页</a>
+		   <a href="{$Request.root.true}" class="wst-empty-btn wst-empty-btn1">返回首页</a>
+		</div>
+	</div>
+</div>
+
+<div class="wst-container">
+	<div style="width:100%;">
+		<div class="uc-goods-box">
+      	<div class="wst-user-head"><span>商品推荐</span></div>
+	      	{wst:goods type='recom' num='6' id='rec'}
+	      	<div class="rnbh-goods">
+				<a href="{:Url("home/goods/detail","id=".$rec["goodsId"])}" target="_blank">
+					<img class='goodsImg' data-original="__ROOT__/{:WSTImg($rec['goodsImg'])}"  title="{$rec['goodsName']}"/>
+				</a>
+				<p class="rnbh-goodsName">
+					<a href='{:Url("home/goods/detail","id=".$rec["goodsId"])}' target='_blank'>
+						{$rec['goodsName']}
+					</a>
+				</p>
+				<div class="rnbh-goodsInfo">
+					<span class="rnbh-goodsprice">￥{$rec['shopPrice']}</span>
+					<span class="rnbh-goodssale">成交量：<em>{$rec['saleNum']}</em></span>
+				</div>
+				<a class="rnbh-addcart" href="javascript:WST.addCart({$rec['goodsId']});" >加入购物车</a>
+			</div>
+			{/wst:goods}
+      </div>
+
+
+		<div class="uc-goods-box">
+      	  <div class="wst-user-head"><span>我的足迹</span></div>
+	      	{wst:goods type='history' num='6' id="his"}
+	      	<div class="rnbh-goods">
+				<a href="{:Url("home/goods/detail","id=".$his["goodsId"])}" target="_blank">
+					<img class='goodsImg' data-original="__ROOT__/{:WSTImg($his['goodsImg'])}"  title="{$his['goodsName']}"/>
+				</a>
+				<p class="rnbh-goodsName">
+					<a href='{:Url("home/goods/detail","id=".$his["goodsId"])}' target='_blank'>
+						{$his['goodsName']}
+					</a>
+				</p>
+				<div class="rnbh-goodsInfo">
+					<span class="rnbh-goodsprice">￥{$his['shopPrice']}</span>
+					<span class="rnbh-goodssale">成交量：<em>{$his['saleNum']}</em></span>
+				</div>
+				<a class="rnbh-addcart" href="javascript:WST.addCart({$his['goodsId']});" >加入购物车</a>
+			</div>
+			{/wst:goods}
+      </div>
+	</div>
+</div>
+{/block}
+{block name="js"}{/block}
+{block name="footer"}{__block__}
+{/block}

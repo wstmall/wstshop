@@ -1,0 +1,97 @@
+{extend name="default/users/base" /}
+{block name="title"}待评价订单 - 用户中心{__block__}{/block}
+{block name="css"}
+{/block}
+{block name="content"}
+  <div class="wst-user-head"><span>待评价订单</span></div>
+  <div class='wst-user-tbar'>
+    <span class="queryTitle">收货人</span><input type='text'  class="u-query" placeholder="请输入收货人" id='userName'/> 
+     <span class="queryTitle">订单号</span><input type='text'  class="u-query" placeholder="请输入订单号" id='orderNo'/> 
+     <button class="wst-btn wst-btn-query" onclick="waitAppraiseByPage()">查询</button>
+  </div>
+  <div class='wst-user-content'>
+    <table class='wst-order-list'>
+       <thead>
+	      <tr class='head'>
+           <th>订单详情</th>
+           <th>收货人</th>
+           <th>总计</th>
+           <th>操作</th>
+        </tr>
+	   </thead>
+	   <tbody id='loadingBdy'>
+	       <tr id='loading' class='empty-row' style='display:none'>
+	            <td colspan='4'><img src="__STYLE__/img/loading.gif">正在加载数据...</td>
+	       </tr>
+       </tbody>
+       <script id="tblist" type="text/html">
+       {{# for(var i = 0; i < d.length; i++){ }}
+       <tbody class="j-order-row">
+         <tr class='empty-row'>
+            <td colspan='6'>&nbsp;</td>
+         </tr>
+         <tr class='order-head'>
+            <td colspan='6' align='right'>
+              <div class='time'>{{d[i].createTime}}</div>
+              <div class='orderno'>订单号：{{d[i].orderNo}}</div>
+              <div>{{d[i].status}}</div>
+            </td>
+         </tr>
+         {{# 
+            var tmp = null,rows = d[i]['list'].length;
+            for(var j = 0; j < d[i]['list'].length; j++){ 
+                  tmp = d[i]['list'][j];
+                  var parmas = {};
+                    parmas.id = d[i].orderId;
+                    parmas.isBatch = 0;
+          }}
+         <tr class='goods-box'>
+            <td>
+               <div class='goods-img'>
+                <a href="{{WST.U('home/goods/detail','id='+tmp.goodsId)}}" target='_blank'>
+                <img data-original='__ROOT__/{{tmp.goodsImg}}'  title='{{tmp.goodsName}}' class="gImg">
+                </a>
+               </div>
+
+
+               <div class='goods-name'>
+                 <div>{{tmp.goodsName}}</div>
+                 <div>{{tmp.goodsSpecNames}}</div>
+               </div>
+               <div class='goods-extra'>{{tmp.goodsPrice}} x {{tmp.goodsNum}}</div>
+            </td>
+
+            {{#if(j==0){}}
+            <td rowspan="{{rows}}" style="vertical-align:text-top;text-align: center;width: 60px;">{{d[i].userName}}</td>
+            <td rowspan="{{rows}}" style="vertical-align:text-top;text-align: center;">
+              ¥{{d[i].realTotalMoney}}
+               <br />
+               <span class='oColor'>{{d[i].payTypeName}}
+               <br />
+               运费：¥{{d[i].deliverMoney}}
+               </span>
+            </td>
+            <td rowspan="{{rows}}" style="vertical-align:text-top;white-space:nowrap;text-align:center;">
+                <div><a href='#none'  onclick='javascript:toAppraise({{d[i].orderId}})'>评价订单</a></div>
+                <div><a href='#none' onclick='view({{d[i].orderId}})' class="orderDetail">订单详情</a></div>
+            </td>
+            {{# } }}
+         </tr>
+         {{# } }}
+       </tbody>
+       {{# } }}
+       </script>
+       <tr class='empty-row'>
+            <td colspan='4' id='pager' align="center" style='padding:5px 0px 5px 0px'>&nbsp;</td>
+       </tr>
+    </table>
+  </div>
+{/block}
+{block name="js"}
+<script type='text/javascript' src='__STYLE__/users/orders/orders.js?v={$v}'></script>
+<script>
+$(function(){
+	waitAppraiseByPage();
+})
+</script>
+{/block}

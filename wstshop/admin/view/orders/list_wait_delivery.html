@@ -1,0 +1,47 @@
+{extend name="base" /}
+{block name="js"}
+<script src="__ADMIN__/orders/orders.js?v={$v}" type="text/javascript"></script>
+{/block}
+{block name="main"}
+<div class="l-loading" style="display: block" id="wst-loading"></div>
+<div class="wst-toolbar">
+订单编号：<input type="text" name="orderNo"  placeholder='订单编号' id="orderNo" class='j-ipt'/>
+支付方式：<select id='payType' class='j-ipt'>
+         <option value='-1'>全部</option>
+         <option value='0'>货到付款</option>
+         <option value='1'>在线支付</option>
+      </select>
+配送方式：<select id='deliverType' class='j-ipt'>
+         <option value='-1'>全部</option>
+         <option value='1'>自提</option>
+         <option value='0'>送货上门</option>
+       </select>
+   <button class="btn btn-blue" onclick='javascript:loadWaitDeliveryGrid()'>查询</button>
+   <div style='clear:both'></div>
+</div>
+<div id="maingrid"></div>
+<div id='deliverBox' style='display:none'>
+    <form id='deliverForm' autocomplete='off'>
+    <table class='wst-form wst-box-top'>
+        <tr>
+            <th width='80'>快递公司：</th>
+            <td>
+               <select id='expressId'>
+                  <option value=''>请选择</option>
+                  {volist name="$express" id='vo'}
+                  <option value='{$vo["expressId"]}'>{$vo["expressName"]}</option>
+                  {/volist}
+               </select>
+            </td>
+          </tr>
+          <tr>
+            <th>快递号：</th>
+            <td><input type='text' id='expressNo' maxLength='20' style='width:80%'></td>
+        </tr>
+    </table>
+    </form>
+</div>
+<script>
+$(function(){initWaitDeliveryGrid();})
+</script>
+{/block}
