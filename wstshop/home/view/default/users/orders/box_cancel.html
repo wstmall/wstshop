@@ -1,0 +1,22 @@
+<table class='wst-form' style='margin-top:30px;'>
+   <tr>
+     <td colspan='2' style='padding-left:70px;'>请选择您取消订单的原因，以便我们能更好的为您服务。</td>
+   </tr>
+   <tr>
+     <th width='120'>取消原因：</th>
+     <td>
+        <select id='reason' onchange='javascript:changeRejectType(this.value)'>
+           {volist name=":WSTDatas(1)" id="vo"}
+           <option value='{$vo["dataVal"]}'>{$vo["dataName"]}</option>
+           {/volist}
+        </select>
+     </td>
+   </tr>
+   <tr id='rejectTr' style='display:none'>
+        <th width='120'>原因<font color='red'>*</font>：</th>
+        <td>
+         <textarea id='content' style='width:99%;height:50px;' maxLength='200'></textarea>
+        </td>
+     </tr>
+   </tr>
+</table>
