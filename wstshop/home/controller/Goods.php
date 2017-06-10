@@ -132,6 +132,13 @@ class Goods extends Base{
 			if(!empty($history)){
 				cookie("history_goods",$history,25920000);
 			}
+            // 商品详情延迟加载
+            $goods['goodsDesc']=htmlspecialchars_decode($goods['goodsDesc']);
+            $rule = '/<img src="\/(upload.*?)"/';
+            preg_match_all($rule, $goods['goodsDesc'], $images);
+            foreach($images[0] as $k=>$v){
+                $goods['goodsDesc'] = str_replace($v, "<img class='goodsImg' data-original=\"".request()->root()."/".WSTImg($images[1][$k],3), $goods['goodsDesc']);
+            }
 	    	$this->assign('goods',$goods);
 	    	return $this->fetch("goods_detail");
     	}else{

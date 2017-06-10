@@ -169,7 +169,7 @@ class Brands extends Base{
 		$where['catId'] = $goodsCatatId;
 		if($key!='')$where['brandName'] = ['like','%'.$key.'%'];
 		return $this->alias('s')->join('__CAT_BRANDS__ cb','s.brandId=cb.brandId','inner')
-		            ->where($where)->field('brandName,s.brandId')->select();
+		            ->where($where)->field('brandName,s.brandId')->order('s.brandName asc')->select();
 	}
 
     /**
@@ -177,7 +177,7 @@ class Brands extends Base{
 	 */
 	public function listQuery($catId){
 		$rs = Db::name('cat_brands')->alias('l')->join('__BRANDS__ b','b.brandId=l.brandId and b.dataFlag=1 and l.catId='.$catId)
-		          ->field('b.brandId,b.brandName')->select();
+		          ->field('b.brandId,b.brandName')->order('b.brandName asc')->select();
 		return $rs;
 	}
 }

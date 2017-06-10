@@ -1,5 +1,5 @@
 var WST = WST || {};
-WST.v = 'o1.2.0';
+WST.v = 'o1.3.0';
 WST.checkBrowser = function(){
 	return {
 		mozilla : /firefox/.test(navigator.userAgent.toLowerCase()),

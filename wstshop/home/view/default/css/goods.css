@@ -141,32 +141,123 @@ text-align:center;background:#ffe4d0;border:1px solid #f6a412;color:#f40;width:1
 .buy-btn{color:#666;background:#eeeeee;cursor: pointer;float:left;;display:block;height:26px;line-height:26px;padding:0px 10px;border:1px solid #ddd;}
 input[type="text"].buy-num{text-align:center;width:50px;float:left;border-left:0px;border-right:0px;border-top:1px solid #ddd;border-bottom:1px solid #ddd;}      
 /*商品评价*/
+.apprtime{color: #999;display: inline-block;margin:5px 0;}
+.appraise-head{
+  width:100%;
+  height:80px;
+  display:flex;
+  margin: 10px auto;
+}
+.appraise-head .text{
+  font-size: 12px;
+  color: #666;
+  font-weight: 400;
+}
+.percent{
+    line-height: 110%;
+    font-size: 45px;
+    color: #E4393C;
+    font-family: arial;
+}
+.percent i{
+  font-size: 45px;
+}
+.percent span {
+    font-size: 23px;
+}
+.app-head-l{
+  flex:1;
+}
+.app-head-lbox{
+  padding: 4px 10px 0 80px;
+}
+.app-head-r{
+  flex:5;
+}
+.app-head-rbox{
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  padding-left: 20px;
+}
+.app-hr-item{
+  flex:1;
+}
+.percentbox{
+  border:1px solid #E4393C;
+  float:left;
+  width:60%;
+  height: 14px;
+  margin-top: 2px;
+  margin-left: 10px;
+}
+.percentbg{
+  height:100%;background:#E4393C;
+}
+.app-hr-text{float:left}
+
+.appr-filter{
+  width:100%;
+  height:30px;
+  border: 1px solid #f5f5f5;
+  background-color: #fafafa;
+  padding-left: 10px;
+}
+.appr-filterbox{
+  width: 100%;
+  height: 100%;
+}
+.appr-filterbox li{
+  float: left;
+  padding:5px 10px;
+}
+.appr-filterbox li .curr{
+    background: #fafafa;
+    color: #e4393c;
+}
+i{
+  font-style: normal;
+}
+.apprimg{
+  width:25px !important;
+  height:25px;
+  border-radius:50%;
+  float:left
+}
+.appr-star,.appr-star-off{
+  background-image:url(./../img/star.png);
+  background-repeat: no-repeat;
+  width: 15px;
+  height: 15px;
+  margin-right: 2px;
+  float: left;
+}
+.appr-star-off{
+  background-position: -80px 0px;
+}
+.userinfo{width: 100%;height: 26px;}
 .appraises-box{
   width:960px;
-  border-bottom:1px solid #ccc;
+  border-bottom:1px solid #eee;
   margin:5px 0;
   padding:0 5px;
-  position: relative;
-}
-.appraises-box .time{
-  position: absolute;
-  bottom: -1px;
-  right: 0;
 }
 .wst-appraises-left{
-  width:655px;height:100%;float:left;
+  width:84%;height:100%;float:left;
 }
 .app-content{
-  max-height:100px;margin:10px 0;
+  margin:10px 0;
 }
 .wst-appraises-right{
-  width:300px;height:100%;float:right;
+  width:150px;height:100%;float:left;
 }
 .goods-spec-box{
-  width:50%;height:100%;float:left;padding-top:10px;
+  width: 100%;
+  height: 100%;
 }
 .appraiser{
-  width:50%;height:100%;float:right;line-height:100px;
+  height:100%;float:left;padding-left: 5px;
 }
 .reply-content{
   line-height:15px;

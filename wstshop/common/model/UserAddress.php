@@ -96,7 +96,7 @@ class UserAddress extends Base{
         if(false !== $result){
             //修改默认地址
             if((int)input('post.isDefault')==1)
-              $this->where("addressId != $this->addressId")->setField('isDefault',0);
+              $this->where("addressId != $this->addressId and userId=".$data['userId'])->setField('isDefault',0);
             return WSTReturn("新增成功", 1,['addressId'=>$this->addressId]);
         }else{
             return WSTReturn($this->getError(),-1);
@@ -106,6 +106,7 @@ class UserAddress extends Base{
      * 编辑资料
      */
     public function edit(){
+        $userId = (int)session('WST_USER.userId');
         $id = (int)input('post.addressId');
         $data = input('post.');
         $areaIds = model('Areas')->getParentIs((int)input('areaId'));
@@ -113,7 +114,7 @@ class UserAddress extends Base{
         $result = $this->validate('UserAddress.edit')->allowField(true)->save($data,['addressId'=>$id,'userId'=>(int)session('WST_USER.userId')]);
         //修改默认地址
         if((int)input('post.isDefault')==1)
-          $this->where("addressId != $id")->setField('isDefault',0);
+          $this->where("addressId != $id and userId=".$userId)->setField('isDefault',0);
         if(false !== $result){
             return WSTReturn("编辑成功", 1);
         }else{

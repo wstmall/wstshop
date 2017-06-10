@@ -48,9 +48,13 @@ class Imports{
 	            $goods['goodsSn'] = trim($sheet->getCell("B".$row)->getValue());
 	            $goods['productNo'] = trim($sheet->getCell("C".$row)->getValue());
 	            $goods['marketPrice'] = trim($sheet->getCell("D".$row)->getValue());
+	            if(floatval($goods['marketPrice'])<0.01)$goods['marketPrice'] = 0.01;
 	            $goods['shopPrice'] = trim($sheet->getCell("E".$row)->getValue());
+	            if(floatval($goods['shopPrice'])<0.01)$goods['shopPrice'] = 0.01;
 	            $goods['goodsStock'] = trim($sheet->getCell("F".$row)->getValue());
+	            if(intval($goods['goodsStock'])<0)$goods['goodsStock'] = 0;
 	            $goods['warnStock'] = trim($sheet->getCell("G".$row)->getValue());
+	            if(intval($goods['warnStock'])<0)$goods['warnStock'] = 0;
 	            $goods['goodsUnit'] = trim($sheet->getCell("H".$row)->getValue());
 	            $goods['goodsSeoKeywords'] = trim($sheet->getCell("I".$row)->getValue());
 	            $goods['goodsTips'] = trim($sheet->getCell("J".$row)->getValue());
@@ -117,7 +121,6 @@ class Imports{
             return json_encode(['status'=>1,'importNum'=>$importNum]);
 		}catch (\Exception $e) {
             Db::rollback();
-            print_r($e);
             return json_encode(WSTReturn('导入商品失败',-1));
         }
 	}

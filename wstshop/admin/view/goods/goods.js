@@ -261,7 +261,7 @@ function initSaleGrid(){
 	        { display: '价格', name: 'shopPrice',isSort: false,width:80,render: function (rowdata, rowindex, value){
 	        	var html = [];
 	        		html.push('<div class="goods-valign-m" ondblclick="javascript:toEditGoodsBase(2,'+rowdata['goodsId']+',\'\')">');
-                    html.push('<input id="ipt_2_'+rowdata['goodsId']+'" onkeyup="javascript:WST.isChinese(this,1)" onkeypress="return WST.isNumberKey(event)" onblur="javascript:editGoodsBase(2,'+rowdata['goodsId']+')" style="display:none;width:98%;border:1px solid red;" maxlength="6"/>');
+                    html.push('<input id="ipt_2_'+rowdata['goodsId']+'" onkeyup="javascript:WST.isChinese(this,1)" onkeypress="return WST.isNumberdoteKey(event)" onblur="javascript:WST.limitDecimal(this,2);editGoodsBase(2,'+rowdata['goodsId']+')" style="display:none;width:98%;border:1px solid red;" maxlength="6"/>');
                     html.push('<span id="span_2_'+rowdata['goodsId']+'" style="display: inline;cursor:pointer;color:green;">'+rowdata['shopPrice']+'</span>');
 
                 html.push('</div>');
@@ -337,7 +337,7 @@ function initStoreGrid(){
 	        { display: '价格', name: 'shopPrice',isSort: false,width:80,render: function (rowdata, rowindex, value){
 	        	var html = [];
 	        		html.push('<div class="goods-valign-m" ondblclick="javascript:toEditGoodsBase(2,'+rowdata['goodsId']+',\'\')">');
-                    html.push('<input id="ipt_2_'+rowdata['goodsId']+'" onkeyup="javascript:WST.isChinese(this,1)" onkeypress="return WST.isNumberKey(event)" onblur="javascript:editGoodsBase(2,'+rowdata['goodsId']+')" style="display:none;width:98%;border:1px solid red;" maxlength="6"/>');
+                    html.push('<input id="ipt_2_'+rowdata['goodsId']+'" onkeyup="javascript:WST.isChinese(this,1)" onkeypress="return WST.isNumberdoteKey(event)" onblur="javascript:WST.limitDecimal(this,2);editGoodsBase(2,'+rowdata['goodsId']+')" style="display:none;width:98%;border:1px solid red;" maxlength="6"/>');
                     html.push('<span id="span_2_'+rowdata['goodsId']+'" style="display: inline;cursor:pointer;color:green;">'+rowdata['shopPrice']+'</span>');
 
                 html.push('</div>');
@@ -433,9 +433,9 @@ function initWarnGrid(){
     });
 }
 function editGoodsStock(fv,goodsId,ids){
-	var vtext = $('#ipt_'+fv+'_'+goodsId).val();
-	if($.trim(vtext)==''){
-		WST.msg('库存不能为空', {icon: 5});	
+	var vtext = $.trim($('#ipt_'+fv+'_'+goodsId).val());
+	if(vtext=='' || parseInt(vtext,10)<0 || vtext.indexOf('.')>-1){
+		WST.msg('库存必须为正整数', {icon: 5});	
         return;
 	}
 	var params = {};
@@ -587,15 +587,17 @@ function endEditGoodsBase(fv,goodsId){
     $('#ipt_'+fv+'_'+goodsId).hide();
 }
 function editGoodsBase(fv,goodsId){
-
-	var vtext = $('#ipt_'+fv+'_'+goodsId).val();
-	if($.trim(vtext)==''){
-		if(fv==2){
-			WST.msg('价格不能为空', {icon: 5});
-		}else if(fv==3){
-			WST.msg('库存不能为空', {icon: 5});
-		}		
-        return;
+    var vtext = $.trim($('#ipt_'+fv+'_'+goodsId).val());
+	if(fv==2){
+        if(vtext=='' || parseFloat(vtext,10)<=0){
+        	WST.msg('价格必须大于0', {icon: 5});
+        	return;
+        }
+	}else if(fv==3){
+        if(vtext=='' || parseInt(vtext,10)<0 || vtext.indexOf('.')>-1){
+        	WST.msg('库存必须为正整数', {icon: 5});
+        	return;
+        }
 	}
 	var params = {};
 	(fv==2)?params.shopPrice=vtext:params.goodsStock=vtext;

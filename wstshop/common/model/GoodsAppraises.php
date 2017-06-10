@@ -139,30 +139,90 @@ class GoodsAppraises extends Base{
 	public function getById(){
 		// 处理匿名
 		$anonymous = (int)input('anonymous');
-
 		$goodsId = (int)input('goodsId');
+		$where = ['ga.goodsId'=>$goodsId,
+				  'ga.dataFlag'=>1,
+				  'ga.isShow'=>1];
+		// 筛选条件
+		$type = input('type');
+		$filterWhere = '';
+		switch ($type) {
+			case 'pic':// 晒图
+				$filterWhere['ga.images'] = ['<>',''];
+				break;
+			case 'best':// 好评
+				$filterWhere = "(ga.goodsScore+ga.serviceScore+ga.timeScore)>=15*0.9";
+				break;
+			case 'good':// 中评
+				$filterWhere = "(ga.goodsScore+ga.serviceScore+ga.timeScore)>=15*0.6 and (ga.goodsScore+ga.serviceScore+ga.timeScore)<15*0.9";
+				break;
+			case 'bad':// 差评
+				$filterWhere = "(ga.goodsScore+ga.serviceScore+ga.timeScore)<15*0.6";
+				break;
+		}
 		$rs  = 	$this->alias('ga')
-					 ->field('ga.content,ga.images,ga.shopReply,ga.replyTime,ga.createTime,ga.goodsScore,ga.serviceScore,ga.timeScore,ga.orderId,u.loginName,u.userTotalScore,goodsSpecNames')
+					 ->field('ga.content,ga.images,ga.replyTime,ga.createTime,ga.goodsScore,ga.serviceScore,ga.timeScore,ga.orderId,u.userPhoto,u.loginName,u.userTotalScore,goodsSpecNames')
 					 ->join('__USERS__ u','ga.userId=u.userId','left')
 					 ->join('__ORDER_GOODS__ og','og.orderId=ga.orderId and og.goodsId=ga.goodsId','inner')
-					 ->where(['ga.goodsId'=>$goodsId,
-							  'ga.dataFlag'=>1,
-							  'ga.isShow'=>1])->paginate()->toArray();
+					 ->where($where)
+					 ->where($filterWhere)
+					 ->paginate()
+					 ->toArray();
+	
 		foreach($rs['Rows'] as $k=>$v){
+			// 格式化时间
+			$rs['Rows'][$k]['createTime'] = date('Y-m-d',strtotime($v['createTime']));
 			$rs['Rows'][$k]['goodsSpecNames'] = str_replace('@@_@@','，',$v['goodsSpecNames']);
+			// 总评分
+			$rs['Rows'][$k]['avgScore'] = ceil(($v['goodsScore'] + $v['serviceScore'] + $v['timeScore'])/3);
 			if($anonymous){
 				$start = floor((strlen($v['loginName'])/2))-1;
 				$rs['Rows'][$k]['loginName'] = substr_replace($v['loginName'],'**',$start,2);
 			}
 			//获取用户等级
-			$rrs = Db::name('user_ranks')->where('startScore','<=',$v['userTotalScore'])->where('endScore','>=',$v['userTotalScore'])->field('rankId,rankName,rebate,userrankImg')->find();
+			$rrs = Db::name('user_ranks')->where('startScore','<=',$v['userTotalScore'])->where('endScore','>=',$v['userTotalScore'])->where('dataFlag=1')->field('rankId,rankName,rebate,userrankImg')->find();
 			$rs['Rows'][$k]['userTotalScore'] = $rrs['userrankImg'];
+			$rs['Rows'][$k]['rankName'] = empty($rrs['rankName'])?' ':$rrs['rankName'];
 		}
+		// 获取该商品 各评价数
+		$eachApprNum = $this->getGoodsEachApprNum($goodsId);
+		$rs['bestNum'] = $eachApprNum['best'];
+		$rs['goodNum'] = $eachApprNum['good'];
+		$rs['badNum'] = $eachApprNum['bad'];
+		$rs['picNum'] = $eachApprNum['pic'];
+		$rs['sum'] = $eachApprNum['sum'];
 		if($rs!==false){
 			return WSTReturn('',1,$rs);
 		}else{
 			return WSTReturn($this->getError(),-1);
 		}
+	}
+	/**
+	* 根据商品id获取各评价数
+	*/
+	public function getGoodsEachApprNum($goodsId){
+		$rs = $this->field('(goodsScore+timeScore+serviceScore) as sumScore')->where(['dataFlag'=>1,'isShow'=>1,'goodsId'=>$goodsId])->select();
+		$data = [];
+		$best=0;
+		$good=0;
+		$bad=0;
+		foreach($rs as $k=>$v){
+			$sumScore = $v['sumScore'];
+			// 计算好、差评数
+			if($sumScore >= 15*0.9){
+				++$best;
+			}else if($sumScore < 15*0.6){
+				++$bad;
+			}
+		}
+		$data['best'] = $best;
+		$data['bad'] = $bad;
+		$data['good'] = count($rs)-$best-$bad;
+		// 晒图评价数
+		$data['pic'] = $this->where(['dataFlag'=>1,'isShow'=>1,'goodsId'=>$goodsId,'images'=>['<>','']])->count();
+		// 总评价数
+		$data['sum'] = $this->where(['dataFlag'=>1,'isShow'=>1,'goodsId'=>$goodsId])->count();
+		return $data;
 	}
 	/*获取最新的5条高评分评价,用于首页显示*/
 	public function getNewAppr($num){

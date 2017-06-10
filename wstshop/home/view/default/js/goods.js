@@ -120,12 +120,19 @@ function showImg(id){
       photos: '#img-file-'+id
     });
 }
+function apprfilter(type){
+	$('.appr-filterbox li a').removeClass('curr');
+	$('#filtertype').val(type);
+	queryByPage(1);
+}
+
+var _first=true;
 function queryByPage(p){
   var params = {};
   params.page = p;
   params.goodsId = goodsInfo.id;
   params.anonymous = 1;
-  $('#pager').empty();
+  params.type = $('#filtertype').val();
   $.post(WST.U('home/goodsappraises/getById'),params,function(data,textStatus){
       var json = WST.toJson(data);
       if(json.status==1 && json.data.Rows){
@@ -136,8 +143,32 @@ function queryByPage(p){
               showImg(g);
             }
           });
+          //  各评价数.
+          $('#totalNum').html(json.data.sum);
+          $('#bestNum').html(json.data.bestNum);
+          $('#goodNum').html(json.data.goodNum);
+          $('#badNum').html(json.data.badNum);
+          $('#picNum').html(json.data.picNum);
+          // 选中当前筛选条件
+          $('#'+params.type).addClass('curr');
+          if(_first && json.data.sum>0){
+	          // 好、中、差评率
+	          let best = parseInt(json.data.bestNum/json.data.sum*100);
+	          let good = parseInt(json.data.goodNum/json.data.sum*100);
+	          let bad = 100-best-good;
+	          $('.best_percent').html(best);
+	          $('.good_percent').html(good);
+	          $('.bad_percent').html(bad);
+	          // 背景色
+	          $('#best_percentbg').css({width:best+'%'});
+	          $('#good_percentbg').css({width:good+'%'});
+	          $('#bad_percentbg').css({width:bad+'%'});
+	          _first = false;
+          }
+
           $('.j-lazyImg').lazyload({ effect: "fadeIn",failurelimit : 10,threshold: 200,placeholder:window.conf.ROOT+'/'+window.conf.GOODS_LOGO});
-            laypage({
+          $('.apprimg').lazyload({ effect: "fadeIn",failurelimit : 10,skip_invisible : false,threshold: 100,placeholder:window.conf.ROOT+'/'+window.conf.USER_LOGO});//会员默认头像
+           laypage({
                cont: 'pager', 
                pages:json.data.TotalPage, 
                curr: json.data.CurrentPage,

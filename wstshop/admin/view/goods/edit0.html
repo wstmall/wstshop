@@ -27,11 +27,11 @@
   </tr>
   <tr>
      <th>市场价格<font color='red'>*</font>：</th>
-     <td><input type='text' class='j-ipt' id='marketPrice' value='{$object["marketPrice"]}' maxLength='10' data-rule='商场价格:required;'/></td>
+     <td><input type='text' class='j-ipt' id='marketPrice' value='{$object["marketPrice"]}' maxLength='10' data-rule='市场价格:required;price' data-rule-price="[/^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$/, '价格必须大于0']" onblur="javascript:WST.limitDecimal(this,2)" onblur='WST.limitDecimal(this,2);'/></td>
   </tr>
   <tr>
      <th>店铺价格<font color='red'>*</font>：</th>
-     <td><input type='text' class='j-ipt' id='shopPrice' value='{$object["shopPrice"]}' maxLength='10' data-rule='店铺价格:required;'/></td>
+     <td><input type='text' class='j-ipt' id='shopPrice' value='{$object["shopPrice"]}' maxLength='10' data-rule='店铺价格:required;price' data-rule-price="[/^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$/, '价格必须大于0']" onblur="javascript:WST.limitDecimal(this,2)" onblur='WST.limitDecimal(this,2);'/></td>
   </tr>
   <tr>
      <th>商品库存<font color='red'>*</font>：</th>

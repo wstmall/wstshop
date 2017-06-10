@@ -20,8 +20,8 @@ class Goods extends Validate{
         ['goodsImg'  ,'require','请上传商品图片'],
         ['goodsSn'  ,'checkGoodsSn:1','请输入商品编号'],
         ['productNo'  ,'checkProductNo:1','请输入商品货号'],
-        ['marketPrice'  ,'require|float','请输入市场价格|市场价格只能为数字'],
-        ['shopPrice'  ,'require|float','请输入店铺价格|店铺价格只能为数字'],
+        ['marketPrice'  ,'checkMarketPrice:1','请输入市场价格'],
+        ['shopPrice'  ,'checkShopPrice:1','请输入店铺价格'],
         ['goodsUnit'  ,'require','请输入商品单位'],
         ['isSale'  ,'in:,0,1','无效的上架状态'],
         ['isRecom'  ,'in:,0,1','无效的推荐状态'],
@@ -41,6 +41,19 @@ class Goods extends Validate{
     	$isChk = model('Goods')->checkExistGoodsKey('goodsSn',$key,$goodsId);
     	if($isChk)return '对不起，该商品编号已存在';
     	return true;
+    }
+    /**
+     * 检测价格
+     */
+    public function checkMarketPrice(){
+        $marketPrice = floatval(input('post.marketPrice'));
+        if($marketPrice<0.01)return '市场价格不能小于0.01';
+        return true;
+    }
+    public function checkShopPrice(){
+        $shopPrice = floatval(input('post.shopPrice'));
+        if($shopPrice<0.01)return '店铺价格不能小于0.01';
+        return true;
     }
     /**
      * 检测商品货号
